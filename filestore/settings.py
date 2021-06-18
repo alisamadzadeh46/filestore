@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # my app
     'core.apps.CoreConfig',
+    'administrator.apps.AdministratorConfig',
 ]
 
 MIDDLEWARE = [
