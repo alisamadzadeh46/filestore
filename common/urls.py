@@ -1,5 +1,7 @@
 from django.urls import path
 
+from administrator.views import RegisterAPIView
+
 app_name = 'common'
 
 urlpatterns = [
