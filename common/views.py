@@ -64,3 +64,16 @@ class UserAPIView(APIView):
             data['revenue'] = user.revenue
 
         return Response(data)
+
+
+class LogoutAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, _):
+        response = Response()
+        response.delete_cookie(key='jwt')
+        response.data = {
+            'message': 'success'
+        }
+        return response
