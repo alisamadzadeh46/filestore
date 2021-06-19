@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'administrator.apps.AdministratorConfig',
     'common.apps.CommonConfig',
+    'ambassador.apps.AmbassadorConfig',
 ]
 
 MIDDLEWARE = [
