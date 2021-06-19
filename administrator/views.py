@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from administrator.serializers import ProductSerializer
 from common.authentication import JWTAuthentication
 from common.serializers import UserSerializer
-from core.models import User, Product
+from core.models import User, Product, Link, Order
 from django.core.cache import cache
 
 
@@ -58,3 +58,23 @@ class ProductGenericAPIView(
                 cache.delete(key)
         cache.delete('products_backend')
         return response
+
+
+class LinkAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk=None):
+        links = Link.objects.filter(user_id=pk)
+        serializer = LinkSerializer(links, many=True)
+        return Response(serializer.data)
+
+
+class OrderAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        orders = Order.objects.filter(complete=True)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
