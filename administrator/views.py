@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from administrator.serializers import ProductSerializer
+from administrator.serializers import *
 from common.authentication import JWTAuthentication
-from common.serializers import UserSerializer
+from common.serializers import *
 from core.models import User, Product, Link, Order
 from django.core.cache import cache
 
