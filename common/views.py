@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import exceptions
 from rest_framework.response import Response
@@ -49,3 +50,17 @@ class LoginAPIView(APIView):
         }
 
         return response
+
+
+class UserAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        data = UserSerializer(user).data
+
+        if 'api/ambassador' in request.path:
+            data['revenue'] = user.revenue
+
+        return Response(data)
