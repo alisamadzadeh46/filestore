@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework import exceptions
 from rest_framework.response import Response
+
+from .authentication import JWTAuthentication
 from .serializers import UserSerializer
 from core.models import User
 
@@ -33,12 +35,12 @@ class LoginAPIView(APIView):
         if not user.check_password(password):
             raise exceptions.AuthenticationFailed('Incorrect Password!')
 
-        scope = 'ambassador' if 'api/ambassador' in request.path else 'admin'
+        # scope = 'ambassador' if 'api/ambassador' in request.path else 'admin'
+        #
+        # if user.is_ambassador and scope == 'admin':
+        #     raise exceptions.AuthenticationFailed('Unauthorized')
 
-        if user.is_ambassador and scope == 'admin':
-            raise exceptions.AuthenticationFailed('Unauthorized')
-
-        token = JWTAuthentication.generate_jwt(user.id, scope)
+        token = JWTAuthentication.generate_jwt(user.id)
 
         response = Response()
         response.set_cookie(key='jwt', value=token, httponly=True)
