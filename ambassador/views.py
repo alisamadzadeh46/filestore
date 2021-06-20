@@ -7,9 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from common.authentication import JWTAuthentication
-from common.serializers import UserSerializer
+from django_redis import get_redis_connection
 from .serializer import ProductSerializer, LinkSerializer
-from core.models import Product, Link, Order, User
+from core.models import Product, Link, Order
 from django.core.cache import cache
 
 
@@ -102,4 +102,14 @@ class StatsAPIView(APIView):
 
 
 class RankingsAPIView(APIView):
-    pass
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        con = get_redis_connection("default")
+
+        rankings = con.zrevrangebyscore('rankings', min=0, max=10000, withscores=True)
+
+        return Response({
+            r[0].decode("utf-8"): r[1] for r in rankings
+        })
