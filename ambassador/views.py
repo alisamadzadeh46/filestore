@@ -81,7 +81,24 @@ class LinkAPIView(APIView):
 
 
 class StatsAPIView(APIView):
-    pass
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        links = Link.objects.filter(user_id=user.id)
+
+        return Response([self.format(link) for link in links])
+
+    def format(self, link):
+        orders = Order.objects.filter(code=link.code, complete=1)
+
+        return {
+            'code': link.code,
+            'count': len(orders),
+            'revenue': sum(o.ambassador_revenue for o in orders)
+        }
 
 
 class RankingsAPIView(APIView):
