@@ -63,7 +63,21 @@ class ProductBackendAPIView(APIView):
 
 
 class LinkAPIView(APIView):
-    pass
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        serializer = LinkSerializer(data={
+            'user': user.id,
+            'code': ''.join(random.choices(string.ascii_lowercase + string.digits, k=6)),
+            'products': request.data['products']
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
 
 
 class StatsAPIView(APIView):
