@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'administrator.apps.AdministratorConfig',
     'common.apps.CommonConfig',
     'ambassador.apps.AmbassadorConfig',
+    'checkout.apps.CheckoutConfig',
 ]
 
 MIDDLEWARE = [
