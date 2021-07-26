@@ -66,8 +66,8 @@ class OrderAPIView(APIView):
                     'currency': 'usd',
                     'quantity': quantity
                 })
-
-            stripe.api_key = 'your strip key'
+                # get stripe and received api key
+            stripe.api_key = 'sk_test_51JHVapKlDK5r8FwFOPE5E6l06vH80JunEhAQwFW5aIzbgkyfpRi0e9qed1lJ6wx5SvaxMEVTZYDO2Hw2hulMpunk00LnGpOiPD'
 
             source = stripe.checkout.Session.create(
                 success_url='http://localhost:5000/success?source={CHECKOUT_SESSION_ID}',
